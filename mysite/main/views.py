@@ -1,3 +1,5 @@
-from django.shortcuts import render
+# views.py file
+from django.http import HttpResponse
 
-# Create your views here.
+def index(request):
+    return HttpResponse("Tech with tim!")
