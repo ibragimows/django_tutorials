@@ -1,7 +1,9 @@
 # views.py file
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import ToDoList, Item
+from .forms import CreateNewList
 
 def index(response, id):
     ls = ToDoList.objects.get(id = id)
@@ -9,3 +11,21 @@ def index(response, id):
 
 def home(response):
     return render(response, "main/home.html", {})
+
+def create(response):
+    if response.method == "POST":
+        form = CreateNewList(response.POST)
+
+        if form.is_valid():
+            n = form.cleaned_data["name"]
+            t = ToDoList(name=n)
+
+        return HttpResponseRedirect("/%i" %t.id)
+    else:
+        form = CreateNewList()
+        
+    return render(response, "main/create.html", {"form": form})
+
+def create(request):
+    form = CreateNewList()
+    return render(request, "main/create.html", {"form": form})
